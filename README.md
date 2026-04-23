@@ -2,7 +2,7 @@
 
 > A dark-themed, neon-accented interactive Tableau dashboard uncovering patterns in team dominance, player roles, attendance trends, and goal-scoring across 90+ years of World Cup history.
 
-![Phase](https://img.shields.io/badge/Phase-1%20In%20Progress-yellow)
+![Phase](https://img.shields.io/badge/Phase-4%20In%20Progress-yellow)
 ![Tool](https://img.shields.io/badge/Tool-Tableau%20Public-blue)
 ![Theme](https://img.shields.io/badge/Theme-Dark%20Neon-blueviolet)
 ![Domain](https://img.shields.io/badge/Domain-Sports%20Analytics-orange)
@@ -19,8 +19,8 @@
 | **Domain** | Sports Analytics |
 | **Visualization Tool** | Tableau Public |
 | **Dashboard Theme** | Dark / Neon (Cyberpunk) |
-| **Current Phase** | Phase 1 — Dataset Sourcing & Repo Setup |
-| **Status** | Repo scaffolded · Datasets added · Notebooks empty |
+| **Current Phase** | Phase 4 — Dashboard Build in Tableau |
+| **Status** | ETL · EDA · Statistical Analysis complete · Tableau data ready |
 
 ---
 
@@ -50,45 +50,44 @@ FIFA World Cup data spanning 90+ years remains underutilized for visual storytel
 NST-DVA-CAP2/
 │
 ├── data/
-│   ├── processed/              # 🔜 Cleaned data — populated in Phase 2
-│   │   └── .gitkeep
+│   ├── processed/              # ✅ cleaned_worldcup_players.csv, tableau_ready_worldcup_players.csv
 │   └── raw/
 │       ├── Primary/            # ✅ WorldCupPlayers.csv
 │       ├── Backup1/            # ✅ WorldCupMatches.csv
 │       └── Backup2/            # ✅ WorldCups.csv
 │
 ├── docs/
-│   └── data_dictionary.md      # 🔜 Empty — to be filled in Phase 2
+│   └── data_dictionary.md      # ✅ Complete — all raw + engineered columns documented
 │
 ├── DVA-focused-Portfolio/
-│   └── README.md               # 🔜 Empty — to be filled after Phase 4
+│   └── README.md               # 🔜 To be filled after Phase 4
 │
 ├── DVA-oriented-Resume/
-│   └── README.md               # 🔜 Empty — to be filled after Phase 4
+│   └── README.md               # 🔜 To be filled after Phase 4
 │
 ├── notebooks/
-│   ├── 01_extraction.ipynb     # 🔜 Empty — Phase 2
-│   ├── 02_cleaning.ipynb       # 🔜 Empty — Phase 2
-│   ├── 03_eda.ipynb            # 🔜 Empty — Phase 2
-│   ├── 04_statistical_analysis.ipynb  # 🔜 Empty — Phase 3
-│   └── 05_final_load_prep.ipynb       # 🔜 Empty — Phase 3
+│   ├── 01_extraction.ipynb     # ✅ Complete — Phase 2
+│   ├── 02_cleaning.ipynb       # ✅ Complete — Phase 2
+│   ├── 03_eda.ipynb            # ✅ Complete — Phase 2
+│   ├── 04_statistical_analysis.ipynb  # ✅ Complete — Phase 3
+│   └── 05_final_load_prep.ipynb       # ✅ Complete — Phase 3
 │
 ├── reports/
-│   ├── presentation_outline.md # 🔜 Empty — Phase 4
-│   ├── project_report_template.md     # 🔜 Empty — Phase 4
-│   └── README.md               # 🔜 Empty — Phase 4
+│   ├── presentation_outline.md # 🔜 To be filled in Phase 5
+│   ├── project_report_template.md     # 🔜 To be filled in Phase 5
+│   └── README.md               # 🔜 To be filled in Phase 5
 │
 ├── scripts/
-│   ├── __init__.py             # 🔜 Empty — Phase 2
-│   └── etl_pipeline.py         # 🔜 Empty — Phase 2
+│   ├── __init__.py             # ✅ Complete
+│   └── etl_pipeline.py         # ✅ Complete
 │
 ├── tableau/
-│   ├── screenshots/            # 🔜 Empty — Phase 4
-│   └── dashboard_links.md      # 🔜 Empty — Phase 4
+│   ├── screenshots/            # 🔜 Phase 4
+│   └── dashboard_links.md      # 🔜 Phase 4
 │
 ├── .gitignore                  # ✅ Created
 ├── README.md                   # ✅ You are here
-└── requirements.txt            # 🔜 To be filled in Phase 2
+└── requirements.txt            # ✅ Complete
 ```
 
 ---
@@ -97,17 +96,17 @@ NST-DVA-CAP2/
 
 | Phase | Description | Status |
 |---|---|---|
-| **Phase 1** | Problem statement · Dataset sourcing · Repo setup | 🟡 In Progress |
-| **Phase 2** | Data extraction · Cleaning · EDA (`notebooks/01–03`) | ⬜ Not started |
-| **Phase 3** | Statistical analysis · Tableau load prep (`notebooks/04–05`) | ⬜ Not started |
-| **Phase 4** | Dashboard build in Tableau (dark neon theme + filters) | ⬜ Not started |
-| **Phase 5** | Final report · Presentation · Tableau Public publish | ⬜ Not started |
+| **Phase 1** | Problem statement · Dataset sourcing · Repo setup | ✅ Complete |
+| **Phase 2** | Data extraction · Cleaning · EDA (`notebooks/01–03`) | ✅ Complete |
+| **Phase 3** | Statistical analysis · Tableau load prep (`notebooks/04–05`) | ✅ Complete |
+| **Phase 4** | Dashboard build in Tableau (dark neon theme + filters) | 🟡 In Progress |
+| **Phase 5** | Final report · Presentation · Tableau Public publish | ⬜ Not Started |
 
 ---
 
 ## 📓 Planned Notebooks Pipeline
 
-> These notebooks are empty for now — will be built Phase 2 onwards.
+> All notebooks are complete. Phases 2 and 3 are done.
 
 ```
 01_extraction → 02_cleaning → 03_eda → 04_statistical_analysis → 05_final_load_prep
