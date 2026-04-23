@@ -43,7 +43,7 @@
 - Counted unique values per column — 82 teams, 836 matches, 7,663 players
 - Compared rows from earliest (1930) and latest (2014) eras
 - Found 736 exact duplicate rows (1.95%)
-- Decoded Event column notation: G=Goal, Y=Yellow, R=Red, I/O=Sub, P=Penalty, W=OwnGoal, MP=MissedPenalty
+- Decoded Event column notation: G=Goal, Y=Yellow, R=Red, I/IH=Sub In, O/OH=Sub Out, P=Penalty, W=OwnGoal, MP=MissedPenalty, RSY=2nd Yellow Red
 
 **Findings:**
 | Metric | Value |
@@ -69,15 +69,37 @@
 | 2 | Strip whitespace on all string columns | Remove invisible padding |
 | 3 | Drop 736 exact duplicate rows | Identical rows carry no new information |
 | 4 | Replace `Shirt Number == 0` with NaN | 0 means "unknown" in pre-numbering era |
-| 5 | Expand Position: NaN→Outfield, GK→Goalkeeper, C→Captain, GKC→GK-Captain | Make usable; added `is_goalkeeper` and `is_captain` booleans |
+| 5 | Position: NaN→Outfield, C→Outfield, GK→Goalkeeper, GKC→GK-Captain | Captain status tracked separately via `is_captain` (int 0/1) |
 | 6 | Map Line-up: S→Starting, N→Substitute | Human-readable labels |
-| 7 | Parse Event column into 9 structured columns | `goals`, `penalties_scored`, `own_goals`, `yellow_cards`, `red_cards`, `second_yellow_reds`, `missed_penalties`, `sub_in`, `sub_out` |
+| 7 | Parse Event column into 10 structured columns | `goals`, `penalties_scored`, `own_goals`, `yellow_cards`, `red_cards`, `second_yellow_reds`, `total_dismissals`, `missed_penalties`, `sub_in`, `sub_out` |
+| 7a | Include IH / OH half-time substitution codes in sub_in / sub_out | ~600 half-time sub events were previously missed |
+| 7b | Subtract `second_yellow_reds` from `yellow_cards` | Avoid double-counting the yellow that triggers RSY |
+| 7c | Add `total_dismissals` = `red_cards` + `second_yellow_reds` | Unified dismissal metric |
+| 7d | Cast `is_goalkeeper`, `is_captain`, `sub_in`, `sub_out` → int (0/1) | Consistent numeric export in CSV |
 | 8 | Extract Coach Nationality from `Coach Name` | Regex extraction of 3-letter code from parentheses |
+
+### Event Codes — Full Inventory
+
+| Code | Parsed? | Column | Notes |
+|------|---------|--------|-------|
+| G | ✅ | `goals` | Goal scored |
+| P | ✅ | `penalties_scored` | Penalty goal |
+| W | ✅ | `own_goals` | Own goal |
+| Y | ✅ | `yellow_cards` | Yellow card (adjusted for RSY) |
+| R | ✅ | `red_cards` | Straight red card |
+| RSY | ✅ | `second_yellow_reds` | Red via second yellow |
+| MP | ✅ | `missed_penalties` | Missed penalty |
+| I | ✅ | `sub_in` | Substituted in |
+| IH | ✅ | `sub_in` | Substituted in at half-time |
+| O | ✅ | `sub_out` | Substituted out |
+| OH | ✅ | `sub_out` | Substituted out at half-time |
+| ETO | ❌ | — | Extra-time only marker; contextual, not a player action |
+| N | ❌ | — | Administrative notation; not a match event |
 
 **Output:**
 - File: `data/processed/cleaned_worldcup_players.csv`
-- Rows: ~37,048 (after dedup)
-- Columns: 20 (9 original + 11 engineered)
+- Rows: 37,048 (after dedup)
+- Columns: 22 (9 original + 13 engineered)
 
 ---
 
@@ -93,7 +115,7 @@
 | 2 | Goals per Player-Match | Count plot | Most scorers net exactly 1 goal |
 | 3 | Starting XI vs Substitutes | Pie + Bar | Roughly 50/50 split |
 | 4 | Yellow & Red Cards by Team | Grouped bar | High-appearance teams get more cards |
-| 5 | Position Distribution | Bar | Vast majority are Outfield |
+| 5 | Position Distribution | Bar | Outfield > Goalkeeper > GK-Captain |
 | 6 | Top 10 Coaches by Matches | Horizontal bar | Top coaches managed 20+ WC matches |
 | 7 | Coach Nationality (Top 10) | Bar | BRA, ARG, ITA produce most coaches |
 | 8 | Goals vs Yellow Cards (Team) | Scatter (bubble) | Positive trend; some teams are outlier disciplinary |
@@ -136,37 +158,41 @@
 | Team Total Goals | SUM(goals) per team |
 | Team Total Yellow Cards | SUM(yellow_cards) per team |
 | Team Total Red Cards | SUM(red_cards) per team |
-| Team Matches Played | COUNT DISTINCT(match_id) per team |
+| Team Total Dismissals | SUM(total_dismissals) per team |
+| Team Matches Played | COUNT DISTINCT(matchid) per team |
 | Team Unique Players | COUNT DISTINCT(player_name) per team |
 | Team Goals/Match | team_total_goals / team_matches_played |
 | Team Cards/Match | (team_yellows + team_reds) / team_matches_played |
 
-**Boolean Flags for Tableau Filters:**
+**Boolean Flags for Tableau Filters (all int 0/1):**
 
 | Flag | Logic |
 |------|-------|
 | Is Goalscorer | goals > 0 |
 | Is Carded | yellow_cards + red_cards > 0 |
 | Is Starter | line_up == "Starting" |
-| Is Substitute Used | sub_in == True |
+| Is Substitute Used | sub_in == 1 |
 | Is Penalty Taker | penalties_scored > 0 OR missed_penalties > 0 |
 | Foreign Coach | team_initials != coach_nationality |
 
 **Output:**
 - File: `data/processed/tableau_ready_worldcup_players.csv`
 - Columns renamed to Title Case for Tableau display
-- Categorical dtypes optimized for performance
+- 40 columns total
 
 ---
 
 ## Data Quality Notes
 
-1. **Position column** only records GK/Captain — no distinction between defenders, midfielders, forwards
+1. **Position column** only records GK/Captain — no distinction between defenders, midfielders, forwards. Captain mapped to Outfield (captaincy tracked via `is_captain`)
 2. **Shirt Number = 0** in early tournaments (pre-1950s) — converted to NaN
 3. **736 exact duplicates** were removed during cleaning
 4. **Event column** parsed via regex — complex multi-event strings like `G43' G87' Y90'` were correctly decomposed
-5. **Coach nationality** extracted from `Coach Name` field format `SURNAME Name (NAT)`
-6. Some country codes changed over time (e.g., `FRG`→`GER`, `URS`→`RUS`, `TCH`→`CZE`, `YUG`→`SCG`→`SRB`) — kept as-is to preserve historical accuracy
+5. **IH/OH half-time subs** included alongside regular I/O subs (~600 additional events captured)
+6. **RSY yellow card adjustment** — subtracted `second_yellow_reds` from `yellow_cards` to avoid double-counting
+7. **Coach nationality** extracted from `Coach Name` field format `SURNAME Name (NAT)`
+8. **ETO and N codes** identified in event data but not parsed (rare contextual/administrative markers, not player actions)
+9. Some country codes changed over time (e.g., `FRG`→`GER`, `URS`→`RUS`, `TCH`→`CZE`, `YUG`→`SCG`→`SRB`) — kept as-is to preserve historical accuracy
 
 ---
 

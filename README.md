@@ -36,7 +36,7 @@ FIFA World Cup data spanning 90+ years remains underutilized for visual storytel
 
 | Folder | File | Rows | Columns | Role | Status |
 |---|---|---|---|---|---|
-| `data/raw/Primary/` | `WorldCupPlayers.csv` | 97,000+ | 9 | Primary | ✅ Added |
+| `data/raw/Primary/` | `WorldCupPlayers.csv` | 37,784 | 9 | Primary | ✅ Added |
 | `data/raw/Backup1/` | `WorldCupMatches.csv` | ~4,572 | 13 | Backup 1 | ✅ Added |
 | `data/raw/Backup2/` | `WorldCups.csv` | 20 | 10 | Backup 2 | ✅ Added |
 
