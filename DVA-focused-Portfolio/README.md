@@ -16,5 +16,5 @@ The goal of this repository is to:
 |------|---------------|
 | Shitanshu | [View Portfolio](https://silence91169.github.io/Profile/) |
 | Krishna | [View Portfolio](https://nstkrishna.github.io/DVA_Portfolio/) |
-| Member 3 | Add link here |
+| Prajjwal | [View Portfolio](https://prajjwaltripathi20.github.io/DAV_portfolio/)|
 | Member 4 | Add link here |
