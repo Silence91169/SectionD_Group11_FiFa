@@ -15,6 +15,6 @@ The goal of this repository is to:
 | Name | Portfolio Link |
 |------|---------------|
 | Shitanshu | [View Portfolio](https://silence91169.github.io/Profile/) |
-| Member 2 | Add link here |
+| Krishna | [View Portfolio](https://nstkrishna.github.io/DVA_Portfolio/) |
 | Member 3 | Add link here |
 | Member 4 | Add link here |
