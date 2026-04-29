@@ -1,17 +1,19 @@
-# DVA-Focused Portfolio
+📊 DVA Portfolio Repository
 
-Use this folder as a reminder for each student to convert the capstone into a portfolio-ready case study.
+This repository contains the portfolio links of all team members from our data visualization & analytics (dva) projects.
+each portfolio showcases individual case studies, dashboards, and insights built during the capstone.
 
-## Portfolio Case Study Should Cover
+🎯 Purpose
 
-- Problem statement and stakeholder context
-- Dataset source and scope
-- Cleaning and transformation summary
-- KPI framework
-- 3-5 key insights
-- Tableau dashboard screenshots and link
-- Recommendations and expected impact
+the goal of this repository is to:
 
-## Suggested Deliverable
+centralize all team members’ dva portfolios
+provide easy access to case studies and dashboards
+serve as a reference for future projects and recruiters
 
-Add a short write-up in your personal portfolio site, Notion page, or PDF case study with a link back to this repository.
+👥 team portfolio links
+name	portfolio link
+shitanshu	(https://silence91169.github.io/Profile/)
+member 2	(add link here)
+member 3	(add link here)
+member 4	(add link here)
